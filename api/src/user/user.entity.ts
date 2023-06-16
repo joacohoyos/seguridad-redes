@@ -1,7 +1,11 @@
+import { EUserRole } from './enum/role.enum';
+
 export class User {
   id: number;
   name: string;
   email: string;
-  role: string;
-  password?: string;
+  role: EUserRole;
+  password: string;
+  is_admin: boolean;
+  password_to_confirm?: string;
 }

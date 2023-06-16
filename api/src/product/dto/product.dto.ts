@@ -5,9 +5,6 @@ export class CreateProductDto {
   image: string;
 }
 
-export class UpdateProductDto {
-  name?: string;
-  price?: number;
-  description?: string;
-  image?: string;
+export class UpdateProductDescriptionDTO {
+  description: string;
 }
