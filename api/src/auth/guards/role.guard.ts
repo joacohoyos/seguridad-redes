@@ -1,11 +1,11 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { User } from '../../user/user.entity';
+import { EUserRole } from '../../user/enum/role.enum';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private readonly roles: string[]) {}
+  constructor(private readonly roles: EUserRole[]) {}
 
   canActivate(
     context: ExecutionContext,
@@ -19,7 +19,7 @@ export class RoleGuard implements CanActivate {
     return this.matchRoles(this.roles, user);
   }
 
-  private matchRoles(requiredRoles: string[], user: User): boolean {
+  private matchRoles(requiredRoles: EUserRole[], user: User): boolean {
     if (!user) {
       return false;
     }

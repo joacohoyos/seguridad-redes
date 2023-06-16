@@ -7,20 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model menu {
-  id      Int      @id @default(autoincrement())
-  name    String   @db.VarChar(255)
-  url     String   @db.VarChar(255)
-  section String   @db.VarChar(255)
-  hidden  Boolean? @default(false)
-}
-
 model users {
-  id       Int     @id @default(autoincrement())
-  name     String  @db.VarChar(255)
-  email    String? @unique @db.VarChar(255)
-  password String  @db.VarChar(255)
-  role     String  @db.VarChar(255)
+  id                  Int      @id @default(autoincrement())
+  name                String   @db.VarChar(255)
+  email               String?  @unique @db.VarChar(255)
+  password            String   @db.VarChar(255)
+  password_to_confirm String?  @db.VarChar(255)
+  is_admin            Boolean? @default(false)
+  role                Int
 }
 
 model products {
@@ -29,4 +23,10 @@ model products {
   price       Float
   description String?
   image       String? @db.VarChar(255)
+}
+
+model notifications {
+  id         Int       @id @default(autoincrement())
+  text       String    @db.VarChar(255)
+  expiration DateTime? @db.Time(6)
 }
