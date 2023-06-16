@@ -12,7 +12,7 @@ export class NotificationService {
   }
 
   async createNotification(text: string) {
-    this.prisma.notifications.updateMany({
+    await this.prisma.notifications.updateMany({
       where: { expiration: null },
       data: { expiration: new Date() },
     });
