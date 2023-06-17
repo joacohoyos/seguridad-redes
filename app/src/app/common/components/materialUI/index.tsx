@@ -7,6 +7,9 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
+import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
 
 export { 
   Box, 
@@ -15,5 +18,8 @@ export {
   Button, 
   Typography, 
   TextField, 
-  InputAdornment, 
+  InputAdornment,
+  CircularProgress,
+  Divider,
+  Card,
 };
