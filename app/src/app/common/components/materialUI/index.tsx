@@ -10,6 +10,7 @@ import KeyIcon from '@mui/icons-material/Key';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
+import IconButton from '@mui/material/IconButton';
 
 export { 
   Box, 
@@ -22,4 +23,5 @@ export {
   CircularProgress,
   Divider,
   Card,
+  IconButton,
 };
