@@ -35,24 +35,33 @@ const mockedSellers: ISeller[] = [
  * 2. Add read cookie logic to decide if user is a seller or not.
  */
 
+const getCookie = (key : string) => {
+  var b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
+  return b ? b.pop() : "";
+}
+
+
 const SellersPage = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isUserSeller, setIsUserSeller] = useState(false);
   const [sellers, setSellers] = useState<ISeller[]>(mockedSellers);
 
-  useEffect(() => {
-    const isSeller = false;
-    // READ COOKIES LOGIC
 
-    // if (isSeller) {
-    //   setIsUserSeller(true);
-    // }
+  useEffect(() => {
+
+    const isSeller = getCookie("role") == "vendedor";
+
+    if (isSeller) {
+     setIsUserSeller(true);
+    }
 
     setTimeout(() => {
       setIsLoading(false);
     }, 5000);
   }, []);
+
+
 
   return (
     <Box sx={layoutBoxStyle}>
