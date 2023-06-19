@@ -20,6 +20,8 @@ const LoginPage = () => {
   const [newPassword, setNewPassword] = useState("");
 
   const handleLogin = async () => {
+    console.log(process.env.NEXT_PUBLIC_API_URL)
+
     setIsLoading(true);
     try {
       const authRes = await api.post(ENDPOINT_AUTH, {
@@ -28,7 +30,7 @@ const LoginPage = () => {
       });
 
       if (authRes.status === 200) {
-        console.log(authRes);
+
       }
 
     } catch (e: any) {
