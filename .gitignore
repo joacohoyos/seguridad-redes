@@ -1,4 +1,67 @@
-node_modules/
-.env
-.eslintcache
+# compiled output
+dist
+node_modules
+
+# Temporary files
+tmp/
+application_default_credentials.json
+service-account.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
 /.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Environment
+.env
+.env.*
+.vscode
+jpg.store.session.sql
+
+# GCP
+jpg-store-338419-7e86aebcde02.json
+jpg-store-338419-59a0e98f5d44.json
+creds.json
+
+# nix-direnv with direnv (https://github.com/direnv/direnv/wiki/Customizing-cache-location)
+.direnv/
+
+dump.rdb
+
+# vim
+.eslintcache
+*~formatting*
+*~formatter*
+*.sw?
+.vercel
+report.json
+src/coverage
+
+.npmrc
