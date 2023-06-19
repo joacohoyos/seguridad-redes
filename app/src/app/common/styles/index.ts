@@ -3,6 +3,7 @@ export const PRIMARY_200 = "#ae7cf9";
 export const PRIMARY_300 = "#a468ff";
 export const PRIMARY_400 = "#954fff";
 export const PRIMARY_500 = "#8229ff";
+export const PRIMARY_600 = "#7921ff";
 export const PRIMARY_700 = "#6b0afc";
 export const PRIMARY_800 = "#5b00e5";
 export const PRIMARY_900 = "#4e00c4";
