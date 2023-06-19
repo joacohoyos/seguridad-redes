@@ -20,7 +20,7 @@ const LoginPage = () => {
       });
 
       if (authRes.status === 200) {
-
+        console.log(authRes);
       }
 
     } catch (e: any) {
