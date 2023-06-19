@@ -50,7 +50,7 @@ const SellersPage = () => {
 
   useEffect(() => {
 
-    const isSeller = getCookie("role") == "vendedor";
+    const isSeller = getCookie("role") == "SELLER";
 
     if (isSeller) {
      setIsUserSeller(true);
