@@ -44,3 +44,7 @@ export const titleStyle = {
   fontSize: 28,
   fontWeight: 600,
 };
+
+export const textFieldStyle = {
+  height: 40,
+};
