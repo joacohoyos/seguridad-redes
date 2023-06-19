@@ -95,7 +95,7 @@ export class UserService {
       data: {
         name,
         email,
-        password,
+        password: await bcrypt.hash(password, 10),
         role: EUserRole.USER, // Set the default role to USER
         is_admin: false, // Assuming the initial admin status is set to false
       },
