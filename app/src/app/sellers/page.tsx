@@ -44,7 +44,7 @@ const getCookie = (key : string) => {
 const SellersPage = () => {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isUserSeller, setIsUserSeller] = useState(false);
+  const [isUserSeller, setIsUserSeller] = useState(true);
   const [sellers, setSellers] = useState<ISeller[]>(mockedSellers);
 
 
@@ -76,6 +76,7 @@ const SellersPage = () => {
                   <SellerCard
                     key={seller.id}
                     name={seller.name}
+                    email={seller.email}
                   />
                 ))}             
               </Box>
