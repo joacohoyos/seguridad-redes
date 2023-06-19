@@ -6,6 +6,7 @@ import { contentBoxStyle, fullWidthBoxStyle, layoutBoxStyle, titleStyle } from "
 import { ISeller } from "./interfaces";
 import Loader from "../common/components/Loader";
 import SellerCard from "../common/components/SellerCard";
+import { EUserRole, getCookie } from "../common/utils";
 
 const mockedSellers: ISeller[] = [
   {
@@ -35,10 +36,7 @@ const mockedSellers: ISeller[] = [
  * 2. Add read cookie logic to decide if user is a seller or not.
  */
 
-const getCookie = (key : string) => {
-  var b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
-  return b ? b.pop() : "";
-}
+
 
 
 const SellersPage = () => {
@@ -50,7 +48,7 @@ const SellersPage = () => {
 
   useEffect(() => {
 
-    const isSeller = getCookie("role") == "SELLER";
+    const isSeller = getCookie("role") == EUserRole[0];
 
     if (isSeller) {
      setIsUserSeller(true);

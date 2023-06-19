@@ -7,7 +7,8 @@ import { fullWidthBoxStyle, layoutBoxStyle, themedButtonStyle } from "../common/
 import api from "../common/api";
 import { ENDPOINT_AUTH } from "../common/routes";
 import Loader from "../common/components/Loader";
-
+import {bake_cookie} from "sfcookies"
+import { EUserRole } from "../common/utils";
 const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +21,6 @@ const LoginPage = () => {
   const [newPassword, setNewPassword] = useState("");
 
   const handleLogin = async () => {
-    console.log(process.env.NEXT_PUBLIC_API_URL)
 
     setIsLoading(true);
     try {
@@ -29,8 +29,10 @@ const LoginPage = () => {
         password, 
       });
 
-      if (authRes.status === 200) {
+      if (authRes.status === 201) {
 
+        bake_cookie("accessToken", authRes.data.accessToken);
+        bake_cookie("role", EUserRole[authRes.data.role])
       }
 
     } catch (e: any) {
