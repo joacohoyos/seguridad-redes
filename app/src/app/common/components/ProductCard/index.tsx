@@ -12,7 +12,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api";
 import { ENDPOINT_PRODUCTS, endpointPutProductName } from "../../routes";
 
-const ProductCard = ({ product } : IProductCard) => {
+const ProductCard = ({ product, isSeller } : IProductCard) => {
 
   const { id, name, image, price, description } = product;
 
@@ -70,11 +70,11 @@ const ProductCard = ({ product } : IProductCard) => {
                   <ClearIcon fontSize="small" />
                 </IconButton>
               </Box>
-            ) : (
+            ) : isSeller ? (
               <IconButton onClick={handleToggleEdit}>
                 <EditIcon fontSize="small" />
               </IconButton>
-            )
+            ) : (<></>)
           }
         </>
       </Box>

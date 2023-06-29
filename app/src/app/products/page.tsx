@@ -7,6 +7,10 @@ import { IProduct } from "./interfaces";
 import Loader from "../common/components/Loader";
 import ProductCard from "../common/components/ProductCard";
 import { productsWrapperBoxStyle } from "./styles";
+import { getCookie } from "../common/utils";
+import { EUserRole } from "../common/utils";
+import api from "../common/api";
+import { ENDPOINT_PRODUCTS } from "../common/routes";
 
 const mockedProducts: IProduct[] = [
   {
@@ -34,22 +38,39 @@ const mockedProducts: IProduct[] = [
 
 const ProductsPage = () => {
 
-  const [proucts, setProducts] = useState<IProduct[]>(mockedProducts);
+  const [proucts, setProducts] = useState<IProduct[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
 
   useEffect(() => {
-    const isSeller = false;
-    // READ COOKIES LOGIC
-
-    // if (isSeller) {
-    //   setIsUserSeller(true);
-    // }
+    if(getCookie("accessToken")){
+      setIsLoggedIn(true);
+      setIsSeller(getCookie("role") == EUserRole[0]);
+      getProducts()
+    }
 
     setTimeout(() => {
       setIsLoading(false);
     }, 5000);
   }, []);
+
+  const getProducts = async () =>{
+    try{
+      const authRes = await api.get(ENDPOINT_PRODUCTS, {
+        headers: {
+          'Authorization': 'Bearer ' + getCookie("accessToken")?.replaceAll('"', '')
+        }
+      });
+      console.log(authRes);
+      if(authRes.status == 200)
+      {
+        setProducts(authRes.data)
+      }
+    } catch (e: any) {
+      console.log(e);
+    }
+  }
 
   return (
     <Box sx={layoutBoxStyle}>
@@ -64,6 +85,7 @@ const ProductsPage = () => {
                   <ProductCard
                     key={product.id}
                     product={product}
+                    isSeller={isSeller}
                   />
                 ))}             
               </Box>

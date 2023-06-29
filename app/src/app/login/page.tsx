@@ -9,11 +9,13 @@ import { ENDPOINT_AUTH } from "../common/routes";
 import Loader from "../common/components/Loader";
 import {bake_cookie} from "sfcookies"
 import { EUserRole } from "../common/utils";
+import { useRouter } from "next/navigation";
 const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter()
 
   const [open, setOpen] = React.useState(false);
   const [sentNewPassword, setSentNewPassword] = useState(false);
@@ -32,7 +34,9 @@ const LoginPage = () => {
       if (authRes.status === 201) {
 
         bake_cookie("accessToken", authRes.data.accessToken);
-        bake_cookie("role", EUserRole[authRes.data.role])
+        bake_cookie("role", EUserRole[authRes.data.role]);
+        router.push('/products');
+
       }
 
     } catch (e: any) {
