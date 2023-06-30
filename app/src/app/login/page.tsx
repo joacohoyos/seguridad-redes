@@ -7,12 +7,15 @@ import { fullWidthBoxStyle, layoutBoxStyle, themedButtonStyle } from "../common/
 import api from "../common/api";
 import { ENDPOINT_AUTH } from "../common/routes";
 import Loader from "../common/components/Loader";
-
+import {bake_cookie} from "sfcookies"
+import { EUserRole } from "../common/utils";
+import { useRouter } from "next/navigation";
 const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter()
 
   const [open, setOpen] = React.useState(false);
   const [sentNewPassword, setSentNewPassword] = useState(false);
@@ -20,6 +23,7 @@ const LoginPage = () => {
   const [newPassword, setNewPassword] = useState("");
 
   const handleLogin = async () => {
+
     setIsLoading(true);
     try {
       const authRes = await api.post(ENDPOINT_AUTH, {
@@ -27,7 +31,11 @@ const LoginPage = () => {
         password, 
       });
 
-      if (authRes.status === 200) {
+      if (authRes.status === 201) {
+
+        bake_cookie("accessToken", authRes.data.accessToken);
+        bake_cookie("role", EUserRole[authRes.data.role]);
+        router.push('/products');
 
       }
 
