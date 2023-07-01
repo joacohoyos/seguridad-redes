@@ -80,4 +80,25 @@ export class UserService {
       },
     });
   }
+
+  async createUser(user: Partial<User>): Promise<User> {
+    const { name, email, password } = user;
+
+    const existingUser = await this.prisma.users.findUnique({
+      where: { email },
+    });
+    if (existingUser) {
+      throw new Error('Email is already taken.');
+    }
+
+    return this.prisma.users.create({
+      data: {
+        name,
+        email,
+        password: await bcrypt.hash(password, 10),
+        role: EUserRole.USER, // Set the default role to USER
+        is_admin: false, // Assuming the initial admin status is set to false
+      },
+    });
+  }
 }

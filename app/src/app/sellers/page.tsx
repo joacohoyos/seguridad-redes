@@ -6,6 +6,7 @@ import { contentBoxStyle, fullWidthBoxStyle, layoutBoxStyle, titleStyle } from "
 import { ISeller } from "./interfaces";
 import Loader from "../common/components/Loader";
 import SellerCard from "../common/components/SellerCard";
+import { EUserRole, getCookie } from "../common/utils";
 
 const mockedSellers: ISeller[] = [
   {
@@ -44,13 +45,13 @@ const getCookie = (key : string) => {
 const SellersPage = () => {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isUserSeller, setIsUserSeller] = useState(false);
+  const [isUserSeller, setIsUserSeller] = useState(true);
   const [sellers, setSellers] = useState<ISeller[]>(mockedSellers);
 
 
   useEffect(() => {
 
-    const isSeller = getCookie("role") == "vendedor";
+    const isSeller = getCookie("role") == EUserRole[0];
 
     if (isSeller) {
      setIsUserSeller(true);
@@ -76,6 +77,7 @@ const SellersPage = () => {
                   <SellerCard
                     key={seller.id}
                     name={seller.name}
+                    email={seller.email}
                   />
                 ))}             
               </Box>
