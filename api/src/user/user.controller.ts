@@ -7,11 +7,11 @@ import {LoggedRequest} from '../auth/interfaces/request.interfaces';
 import {EUserRole} from './enum/role.enum';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getUsers(@Request() req: LoggedRequest): Promise<User[]> {
     if (req.user.is_admin) {
       return this.userService.getUsers();
@@ -19,15 +19,15 @@ export class UserController {
     return this.userService.getUsersByRole(EUserRole.SELLER);
   }
 
-  @Put(':id')
+  @Put(':email')
   async updateUser(
-    @Param('id') userId: number,
+    @Param('email') email: string,
     @Body() userData: Partial<User>,
   ): Promise<User> {
-    return this.userService.updateUser(userId, userData);
+    return this.userService.updateUser(email, userData);
   }
-  @Post(':id/password')
-  async confirmPassword(@Param('id') userId: number): Promise<User> {
-    return this.userService.confirmPassword(userId);
+  @Post(':email/password')
+  async confirmPassword(@Param('email') email: string): Promise<User> {
+    return this.userService.confirmPassword(email);
   }
 }
