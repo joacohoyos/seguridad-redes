@@ -10,14 +10,14 @@ import { fullWidthBoxStyle } from "../../styles";
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api";
-import { ENDPOINT_PRODUCTS, endpointPutProductName } from "../../routes";
+import { ENDPOINT_PRODUCTS, endpointPutProductDescription } from "../../routes";
 
 const ProductCard = ({ product, isSeller } : IProductCard) => {
 
   const { id, name, image, price, description } = product;
 
   const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState(name);
+  const [newDesc, setNewDesc] = useState(description);
 
   const handleToggleEdit = () => {
     setIsEditing(!isEditing);
@@ -25,25 +25,25 @@ const ProductCard = ({ product, isSeller } : IProductCard) => {
 
   const handleSaveEdit = async () => {
     try {
-      const editRes = await api.post(endpointPutProductName(id), {
-        name: newName
+      const editRes = await api.post(endpointPutProductDescription(id), {
+        description: newDesc
       });
 
       if (editRes.status === 200) {
       } else {
-        setNewName(name);
+        setNewDesc(description);
       }
       setIsEditing(false);
     } catch (e: any) {
       console.log(e);
-      setNewName(name);
+      setNewDesc(description);
       setIsEditing(false);
     }
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setNewName(name);
+    setNewDesc(description);
   };
 
   return (
@@ -51,13 +51,7 @@ const ProductCard = ({ product, isSeller } : IProductCard) => {
       <Box sx={{...fullWidthBoxStyle, alignItems: "flex-start"}}>
         <Box sx={iconNameBoxStyle}>
           <CategoryIcon sx={{ marginRight: 2 }} fontSize="small" />
-          <TextField
-            size="small" 
-            defaultValue={name}
-            value={newName} 
-            disabled={!isEditing}
-            onChange={(e) => setNewName(e.target.value)}
-          />
+          {name}
         </Box>
         <>
           {
@@ -79,7 +73,14 @@ const ProductCard = ({ product, isSeller } : IProductCard) => {
         </>
       </Box>
       <Box sx={descriptionBoxStyle}>
-        <Typography sx={descriptionTextStyle}>{`${description}`}</Typography>
+      <TextField
+            multiline
+            fullWidth
+            defaultValue={description}
+            value={newDesc} 
+            disabled={!isEditing}
+            onChange={(e) => setNewDesc(e.target.value)}
+          />
       </Box>
     </Card>
   );
