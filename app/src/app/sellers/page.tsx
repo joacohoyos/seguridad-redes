@@ -10,47 +10,18 @@ import { EUserRole, getCookie } from "../common/utils";
 import api from "../common/api";
 import { ENDPOINT_USERS } from "../common/routes";
 
-const mockedSellers: ISeller[] = [
-  {
-    id: "1",
-    name: "Guido Rosito",
-    email: "guidorosito@frba.com",
-    role: 0,
-  },
-  {
-    id: "2",
-    name: "Guido Klajnberg",
-    email: "guidoklaj@frba.com",
-    role: 0,
-  },
-  {
-    id: "3",
-    name: "Joaquín Hoyos",
-    email: "jhoyos@frba.com",
-    role: 0,
-  },
-];
-
-/**
- * @TODO
- * 
- * 1. Remove mocked data and fetch it from api.
- * 2. Add read cookie logic to decide if user is a seller or not.
- */
-
-
-
-
 const SellersPage = () => {
-
   const [isLoading, setIsLoading] = useState(true);
   const [isUserSeller, setIsUserSeller] = useState(false);
   const [sellers, setSellers] = useState<ISeller[]>();
 
   useEffect(() => {
-
+    const isLogged = getCookie('accessToken')
     const isSeller = getCookie("role") == EUserRole[0];
 
+    if(!isLogged) {
+      window.location.href = "/login"
+    }
     if (isSeller) {
      setIsUserSeller(true);
      getSellers();
@@ -78,7 +49,6 @@ const SellersPage = () => {
       console.log(e)
     }
   }
-
 
   return (
     <Box sx={layoutBoxStyle}>
