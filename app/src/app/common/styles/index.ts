@@ -7,6 +7,7 @@ export const PRIMARY_600 = "#7921ff";
 export const PRIMARY_700 = "#6b0afc";
 export const PRIMARY_800 = "#5b00e5";
 export const PRIMARY_900 = "#4e00c4";
+export const PRIMARY_DARK_100 = "#5a1eb5";
 
 export const layoutBoxStyle = {
   backgroundColor: PRIMARY_500,
@@ -35,7 +36,8 @@ export const themedButtonStyle = {
 
 export const contentBoxStyle = {
   width: "95%",
-  height: "95%",
+  height: "90%",
+  marginTop: 8,
   padding: 2,
   backgroundColor: "white",
   borderRadius: 2,

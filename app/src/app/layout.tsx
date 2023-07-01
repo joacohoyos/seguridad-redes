@@ -1,5 +1,15 @@
+"use client"
+
+import { Box } from '@mui/material'
+import DrawerAppBar from './common/components/AppBar'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { layoutBoxStyle } from './common/styles'
+import { useEffect, useState } from 'react'
+import useAuth from './common/hooks/useAuth'
+import Loader from './common/components/Loader'
+import { usePathname } from 'next/navigation'
+import { EAuthenticatedRoutes } from './common/routes'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,9 +23,35 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+  const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const { redirectOnNotAuth } = useAuth();
+
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      redirectOnNotAuth();
+    }
+  }, []);
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Box sx={layoutBoxStyle}>
+          {isLoading ? (
+            <Loader color={"white"} />
+          ) : (
+            <>
+              {isAuthenticated && pathname !== EAuthenticatedRoutes.ROUTE_LOGIN && 
+                (<DrawerAppBar />)
+              }          
+              {children}
+            </>
+          )}
+        </Box>
+      </body>
     </html>
   )
 }

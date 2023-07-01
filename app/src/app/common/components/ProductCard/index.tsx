@@ -53,7 +53,6 @@ const ProductCard = ({ product, isSeller } : IProductCard) => {
           <CategoryIcon sx={{ marginRight: 2 }} fontSize="small" />
           <TextField
             size="small" 
-            defaultValue={name}
             value={newName} 
             disabled={!isEditing}
             onChange={(e) => setNewName(e.target.value)}
