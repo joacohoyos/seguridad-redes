@@ -62,7 +62,7 @@ const ProductsPage = () => {
           'Authorization': 'Bearer ' + getCookie("accessToken")?.replaceAll('"', '')
         }
       });
-      console.log(authRes);
+      
       if(authRes.status == 200)
       {
         setProducts(authRes.data)

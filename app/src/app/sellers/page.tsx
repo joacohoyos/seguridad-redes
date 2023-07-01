@@ -7,6 +7,8 @@ import { ISeller } from "./interfaces";
 import Loader from "../common/components/Loader";
 import SellerCard from "../common/components/SellerCard";
 import { EUserRole, getCookie } from "../common/utils";
+import api from "../common/api";
+import { ENDPOINT_USERS } from "../common/routes";
 
 const mockedSellers: ISeller[] = [
   {
@@ -42,9 +44,8 @@ const mockedSellers: ISeller[] = [
 const SellersPage = () => {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isUserSeller, setIsUserSeller] = useState(true);
-  const [sellers, setSellers] = useState<ISeller[]>(mockedSellers);
-
+  const [isUserSeller, setIsUserSeller] = useState(false);
+  const [sellers, setSellers] = useState<ISeller[]>();
 
   useEffect(() => {
 
@@ -52,6 +53,7 @@ const SellersPage = () => {
 
     if (isSeller) {
      setIsUserSeller(true);
+     getSellers();
     }
 
     setTimeout(() => {
@@ -59,6 +61,23 @@ const SellersPage = () => {
     }, 5000);
   }, []);
 
+  const getSellers = async () => {
+    try {
+      const authRes = await api.get(ENDPOINT_USERS, {
+        headers: {
+          'Authorization': 'Bearer ' + getCookie("accessToken")?.replaceAll('"', '')
+        }
+      });
+
+      if(authRes.status == 200)
+      {
+        setSellers(authRes.data)
+      }
+
+    } catch (e : any){
+      console.log(e)
+    }
+  }
 
 
   return (
