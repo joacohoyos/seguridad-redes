@@ -5,7 +5,7 @@ import { AccountCircle, Box, Button, InputAdornment, KeyIcon, Modal, TextField, 
 import { appTitleTextStyle, forgorYourPasswordTextStyle, loginBox, modalBoxStyle } from "./styles";
 import { fullWidthBoxStyle, layoutBoxStyle, themedButtonStyle } from "../common/styles";
 import api from "../common/api";
-import { ENDPOINT_AUTH } from "../common/routes";
+import { ENDPOINT_AUTH, ENDPOINT_USERS } from "../common/routes";
 import Loader from "../common/components/Loader";
 import {bake_cookie} from "sfcookies"
 import { EUserRole } from "../common/utils";
