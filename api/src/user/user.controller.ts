@@ -11,7 +11,6 @@ import {EUserRole} from './enum/role.enum';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(new RoleGuard([EUserRole.SELLER, EUserRole.INTERNAL]))
   @Get()
   async getUsers(@Request() req: LoggedRequest): Promise<User[]> {
     if (req.user.is_admin) {
@@ -19,6 +18,7 @@ export class UserController {
     }
     return this.userService.getUsersByRole(EUserRole.SELLER);
   }
+
   @Put(':id')
   async updateUser(
     @Param('id') userId: number,
