@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
 import { CreateUserDto, mapCreateUserDtoToUser } from './dto/signup.dto';
-import {EUserRole} from "../user/enum/role.enum";
+import { EUserRole } from '../user/enum/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -13,8 +13,10 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
+    console.log('getting');
     const user = await this.userService.getUserByEmail(email);
 
+    console.log(user);
     if (user && password === user.password) {
       return user;
     }
@@ -22,10 +24,10 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User): Promise<{ accessToken: string, role:EUserRole }> {
+  async login(user: User): Promise<{ accessToken: string; role: EUserRole }> {
     const payload = { email: user.email };
     const accessToken = this.jwtService.sign(payload);
-    const role = user.role
+    const role = user.role;
     return { accessToken, role };
   }
 
