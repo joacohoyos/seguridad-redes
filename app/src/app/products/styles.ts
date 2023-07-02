@@ -164,3 +164,30 @@ export const ProductsContent = {
   padding: '20px',
   backgroundColor: "white",
 }
+
+export const Banner = {
+  position: 'absolute' as 'absolute',
+  backgroundColor: 'black',
+  color: 'white',
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '20px',
+  padding: '10px 0',
+  textAlign: 'center' as 'center',
+  top: '85px',
+  width: '100%',
+}
+
+export const ProductButton = {
+  color: 'white',
+  backgroundColor: 'black',
+  cursor : 'pointer',
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '15px',
+  padding: '10px 40px',
+}
+
+export const ProductContent = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}

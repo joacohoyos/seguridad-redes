@@ -1,15 +1,11 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react";
-import { IProduct } from "./products/interfaces";
-import { EUserRole, getCookie } from "./common/utils";
-import { ENDPOINT_PRODUCTS } from "./common/routes";
+import { INotification, IProduct } from "./products/interfaces";
+import { getCookie } from "./common/utils";
+import { ENDPOINT_NOTIFICATIONS } from "./common/routes";
 import api from "./common/api";
-import { contentBoxStyle, fullWidthBoxStyle, layoutBoxStyle, titleStyle } from "./common/styles";
-import { Box, Divider, Typography } from "@mui/material";
-import { Footer, FooterText, Header, Hero, HeroButton, HeroButtonHover, HeroSubtitle, HeroText, HomeContent, HomeProduct, LogButton, Logo, ProductDescription, ProductImage, ProductName, ProductPrice, Products, productsWrapperBoxStyle } from "./products/styles";
-import ProductCard from "./common/components/ProductCard";
-import Loader from "./common/components/Loader";
+import { Banner, Footer, FooterText, Header, Hero, HeroButton, HeroButtonHover, HeroSubtitle, HeroText, HomeContent, HomeProduct, LogButton, Logo, ProductButton, ProductContent, ProductDescription, ProductImage, ProductName, ProductPrice, Products, productsWrapperBoxStyle } from "./products/styles";
 import { delete_cookie } from "sfcookies";
 
 const products = [
@@ -73,41 +69,28 @@ const products = [
 
 const HomePage = () => {
 
-  const [proucts, setProducts] = useState<IProduct[]>();
-  const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSeller, setIsSeller] = useState(false);
   const [isButtonHover, setIsButtonHover] = useState(true)
   const productsList = useRef(null) as any;
+  const [notification, setNotification] = useState<INotification>();
 
   useEffect(() => {
     if(getCookie("accessToken")){
       setIsLoggedIn(true);
-      setIsSeller(getCookie("role") == EUserRole[0]);
-      getProducts()
     }
+    getNotification()
+  }, [])
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
-  }, []);
-
-  const getProducts = async () =>{
-    try{
-      const authRes = await api.get(ENDPOINT_PRODUCTS, {
-        headers: {
-          'Authorization': 'Bearer ' + getCookie("accessToken")?.replaceAll('"', '')
-        }
-      });
-      
-      if(authRes.status == 200)
-      {
-        setProducts(authRes.data)
+  const getNotification = async () => {
+    try {
+      const authRes = await api.get(ENDPOINT_NOTIFICATIONS);
+      if (authRes.status == 200) {
+        setNotification(authRes.data);
       }
     } catch (e: any) {
       console.log(e);
     }
-  }
+  };
 
   const handleButtonHover = () => {
     setIsButtonHover(true);
@@ -126,29 +109,37 @@ const HomePage = () => {
       window.location.href = "/login"
     }
   }
-  
+
   return (
     <div style={HomeContent}>
       <div style={Header}>
         <img style={Logo} src='https://seeklogo.com/images/K/kings-sneakers-logo-5B97CC79A1-seeklogo.com.png' />
         <button onClick={handleLogClick} style={LogButton}>{isLoggedIn? 'Logout': 'Login'}</button>
       </div>
+      {notification && (
+      <div style={Banner}>
+        <div dangerouslySetInnerHTML={{__html: notification.text}}></div>
+      </div>
+      )}
       <div style={Hero}>
         <p style={HeroText}>Kings Sneakers</p>
         <p style={HeroSubtitle}>The best sneakers in the world</p>
-        <button style={isButtonHover ? HeroButtonHover:HeroButton}   onMouseEnter={handleButtonHover}
+        <button style={isButtonHover ? HeroButtonHover:HeroButton} onMouseEnter={handleButtonHover}
           onMouseLeave={handleButtonLeave}
           onClick={() => productsList.current.scrollIntoView({ behavior: 'smooth' }) }
-          >BUY NOW</button>
+          >SEE MORE!</button>
       </div>
       <div style={Products} ref={productsList}>
         {products.map(prod => {
           return (
-            <div style={HomeProduct} id={prod.id}> 
+            <div style={HomeProduct} key={prod.id}> 
               <img style={ProductImage} src={prod.image} />
-              <div style={ProductDescription}>
-                <p style={ProductName}>{prod.name}</p>
-                <p style={ProductPrice}>${prod.price}</p>
+              <div style={ProductContent}>
+                <div style={ProductDescription}>
+                  <p style={ProductName}>{prod.name}</p>
+                  <p style={ProductPrice}>${prod.price}</p>
+                </div>
+                <button style={ProductButton}> Buy </button>
               </div>
             </div>
           )
@@ -159,35 +150,6 @@ const HomePage = () => {
         <p style={FooterText}>2023</p>
       </div>
     </div>
-    // <Box sx={layoutBoxStyle}>
-    //   <Box>
-    //   {
-    //       isLoggedIn ? (
-    //         <>
-    //           <Typography sx={titleStyle}>Productos</Typography> 
-    //           <Divider />
-    //           <Box sx={productsWrapperBoxStyle}>
-    //             {Array.isArray(proucts) && proucts.map((product) => (
-    //               <ProductCard
-    //                 key={product.id}
-    //                 product={product}
-    //                 isSeller={isSeller}
-    //               />
-    //             ))}             
-    //           </Box>
-    //         </>
-    //       ) : isLoading ? (
-    //         <Loader />
-    //       ) : (
-    //         <Box sx={{...fullWidthBoxStyle, height: "100%" }}>
-    //           <Typography fontWeight={500}>Usted no tiene acceso a esta sección.</Typography>
-    //         </Box>
-    //       )
-    //     }
-
-    //   </Box>
-
-    // </Box>
   )
 }
 
