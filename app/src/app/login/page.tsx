@@ -130,13 +130,13 @@ const LoginPage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalBoxStyle}>
-          <Typography variant="h6" component="h2" marginBottom={1}>
+          <Typography style={{color: 'black'}} variant="h6" component="h2" marginBottom={1}>
             Change your password
           </Typography>
           {
             sentNewPassword ? (
               <Box>
-                <Typography>
+                <Typography style={{color: 'black'}}>
                   If the email is registered, you will get a confirmation message shortly.
                 </Typography>
                 <Box sx={fullWidthBoxStyle}>
@@ -154,7 +154,7 @@ const LoginPage = () => {
               </Box>
             ) : (
               <>
-                <Typography>Email</Typography>
+                <Typography style={{color: 'black'}}>Email</Typography>
                 <TextField
                   fullWidth
                   variant="outlined"
@@ -162,9 +162,10 @@ const LoginPage = () => {
                   sx={{ marginBottom: 2 }}
                   onChange={(e) => setRecoverPassEmail(e.target.value)}
                 />
-                <Typography>New password</Typography>
+                <Typography style={{color: 'black'}}>New password</Typography>
                 <TextField
                   fullWidth
+                  type="password"
                   variant="outlined"
                   size="small"
                   sx={{ marginBottom: 1 }}

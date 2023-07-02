@@ -127,7 +127,7 @@ const HomePage = () => {
         <button style={isButtonHover ? HeroButtonHover:HeroButton} onMouseEnter={handleButtonHover}
           onMouseLeave={handleButtonLeave}
           onClick={() => productsList.current.scrollIntoView({ behavior: 'smooth' }) }
-          >SEE MORE!</button>
+          >SEE MORE</button>
       </div>
       <div style={Products} ref={productsList}>
         {products.map(prod => {
@@ -146,8 +146,7 @@ const HomePage = () => {
         })}
       </div>
       <div style={Footer}>
-        <p style={FooterText}>Ultimate Shoes Marketplace</p>
-        <p style={FooterText}>2023</p>
+        <p style={FooterText}>Kings Sneakers © 2023</p>
       </div>
     </div>
   )

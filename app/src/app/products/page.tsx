@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Box, Divider, Typography } from "../common/components/materialUI";
 import { contentBoxStyle, fullWidthBoxStyle, titleStyle } from "../common/styles";
 import { IProduct } from "./interfaces";
@@ -28,6 +28,7 @@ const ProductsPage = () => {
     if(!isLogged) {
       window.location.href = "/login"
     }
+
     if (isSeller || isAdmin) {
      setIsUserSeller(isSeller);
      setIsUserAdmin(isAdmin)
@@ -120,7 +121,7 @@ const ProductsPage = () => {
                         <p style={ProductName}>{prod.name}</p>
                         ) : <input type="text" defaultValue={prod.name} onChange={(event:ChangeEvent<HTMLInputElement>) => setNewProductName(event.target.value)} onKeyDown={handleKeyDown}/>}
                         <p style={ProductPrice}>${prod.price}</p>
-                        {!isUserAdmin && (
+                        {isUserAdmin && (
                         <EditIcon onClick={() => handleEditClick(prod.id)} style={{fill: 'black', cursor: 'pointer', position: 'absolute', right: 0, top: '25%'}}/>
                       )}
                       </div>
@@ -140,8 +141,7 @@ const ProductsPage = () => {
         }
       </Box>
       <div style={Footer}>
-        <p style={FooterText}>Ultimate Shoes Marketplace</p>
-        <p style={FooterText}>2023</p>
+        <p style={FooterText}>Kings Sneakers © 2023</p>
       </div>
     </div>
   )

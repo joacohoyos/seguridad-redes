@@ -98,8 +98,7 @@ const SellersPage = () => {
         }
       </Box>
       <div style={Footer}>
-        <p style={FooterText}>Ultimate Shoes Marketplace</p>
-        <p style={FooterText}>2023</p>
+        <p style={FooterText}>Kings Sneakers © 2023</p>
       </div>
     </div>
   )
