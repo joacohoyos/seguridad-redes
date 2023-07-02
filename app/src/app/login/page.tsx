@@ -10,6 +10,7 @@ import Loader from "../common/components/Loader";
 import {bake_cookie} from "sfcookies"
 import { EUserRole } from "../common/utils";
 import { useRouter } from "next/navigation";
+import { Header, Logo } from "../products/styles";
 const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -64,9 +65,9 @@ const LoginPage = () => {
     <Box sx={layoutBoxStyle}>
       <Box sx={loginBox}>
         <Box width="100%">
-          <Box sx={{...fullWidthBoxStyle, justifyContent: "center"}}>
-            <Typography sx={appTitleTextStyle}>Bool-ner-able Marketplace</Typography>
-          </Box>
+        <div style={Header}>
+        <img style={{...Logo, margin: 'auto', paddingTop: '10px'}} src='https://seeklogo.com/images/K/kings-sneakers-logo-5B97CC79A1-seeklogo.com.png' />
+      </div>
           <Typography>Email</Typography>
           <TextField
             id="email"
