@@ -7,7 +7,7 @@ import { IProduct } from "./interfaces";
 import Loader from "../common/components/Loader";
 import { EUserRole, getCookie } from "../common/utils";
 import api from "../common/api";
-import { ENDPOINT_PRODUCTS, endpointPutProductName } from "../common/routes";
+import { ENDPOINT_PRODUCTS, endpointPutProductDescription } from "../common/routes";
 import { Footer, FooterText, Header, HomeProduct, LogButton, Logo, ProductDescription, ProductImage, ProductName, ProductPrice, ProductsList } from "../products/styles";
 import { delete_cookie } from "sfcookies";
 import EditIcon from '@mui/icons-material/Edit';
@@ -60,7 +60,7 @@ const ProductsPage = () => {
   const editProduct = async (prodId: string, name: string) => { 
     try {
         setIsLoading(true)
-        await api.put(endpointPutProductName(prodId), {
+        await api.put(endpointPutProductDescription(prodId), {
             description: name
           },{
             headers: {
@@ -114,7 +114,7 @@ const ProductsPage = () => {
               <Divider />
               <div style={ProductsList}>
                 {Array.isArray(products) && products.map((prod) => (
-                    <div style={HomeProduct} id={prod.id}> 
+                    <div style={HomeProduct} key={prod.id}> 
                       <img style={ProductImage} src={prod.image} />
                       <div style={ProductDescription}>
                         {productEditing !== prod.id ? (

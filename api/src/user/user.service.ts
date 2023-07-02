@@ -19,9 +19,9 @@ export class UserService {
     return this.prisma.users.findUnique({ where: { email } });
   }
 
-  async updateUser(userId: number, userData: Partial<User>): Promise<User> {
+  async updateUser(email: string, userData: Partial<User>): Promise<User> {
     const user = await this.prisma.users.findUnique({
-      where: { id: Number(userId) },
+      where: { email: email},
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -30,7 +30,7 @@ export class UserService {
 
     if (password) {
       return this.prisma.users.update({
-        where: { id: Number(userId) },
+        where: { email: email },
         data: {
           ...rest,
           password,
@@ -40,7 +40,7 @@ export class UserService {
 
     if (password_to_confirm) {
       return this.prisma.users.update({
-        where: { id: Number(userId) },
+        where: { email: email },
         data: {
           ...rest,
           password_to_confirm,
@@ -49,15 +49,15 @@ export class UserService {
     }
 
     return this.prisma.users.update({
-      where: { id: Number(userId) },
+      where: { email: email },
       data: {
         ...rest,
       },
     });
   }
-  async confirmPassword(userId: number): Promise<User> {
+  async confirmPassword(email: string): Promise<User> {
     const user = await this.prisma.users.findUnique({
-      where: { id: Number(userId) },
+      where: { email: email },
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -70,7 +70,7 @@ export class UserService {
     }
 
     return this.prisma.users.update({
-      where: { id: Number(userId) },
+      where: { email: email },
       data: {
         password: user.password_to_confirm,
         password_to_confirm: null,

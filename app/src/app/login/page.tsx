@@ -5,9 +5,9 @@ import { AccountCircle, Box, Button, InputAdornment, KeyIcon, Modal, TextField, 
 import { appTitleTextStyle, forgorYourPasswordTextStyle, loginBox, modalBoxStyle } from "./styles";
 import { fullWidthBoxStyle, layoutBoxStyle, themedButtonStyle } from "../common/styles";
 import api from "../common/api";
-import { ENDPOINT_AUTH, ENDPOINT_USERS } from "../common/routes";
+import { ENDPOINT_AUTH, endpointChangePassword } from "../common/routes";
 import Loader from "../common/components/Loader";
-import {bake_cookie} from "sfcookies"
+import { setCookie } from "cookies-next";
 import { EUserRole } from "../common/utils";
 import { useRouter } from "next/navigation";
 import { Header, Logo } from "../products/styles";
@@ -34,9 +34,9 @@ const LoginPage = () => {
 
       if (authRes.status === 201) {
 
-        bake_cookie("accessToken", authRes.data.accessToken);
-        bake_cookie("role", EUserRole[authRes.data.role]);
-        router.push('/');
+        setCookie("accessToken", authRes.data.accessToken);
+        setCookie("role", EUserRole[authRes.data.role]);
+        router.push('/products');
 
       }
 
@@ -51,7 +51,15 @@ const LoginPage = () => {
   }
 
   const handleChangePassword = async () => {
-    setSentNewPassword(true);
+
+    const authRes = await api.put(endpointChangePassword(recoverPassEmail), {
+      password_to_confirm: newPassword
+    });
+
+    if (authRes.status === 200) {
+      setSentNewPassword(true);
+    }
+
   }
 
   const handleClose = () => {

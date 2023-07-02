@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react";
-import { INotification, IProduct } from "./products/interfaces";
+import { INotification } from "./products/interfaces";
 import { getCookie } from "./common/utils";
 import { ENDPOINT_NOTIFICATIONS } from "./common/routes";
 import api from "./common/api";
