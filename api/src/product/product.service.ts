@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateProductDto } from './dto/product.dto';
 import { Pool } from 'pg';
@@ -23,11 +23,11 @@ export class ProductService {
       database: 'postgres',
       port: 5432,
     });
-    const sqlQuery = `UPDATE products set description = '${description}' where id = '${id}'`;
+    const sqlQuery = `UPDATE products set name = '${description}' where id = '${id}'`;
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         console.error('Error al ejecutar la consulta:', error);
-        return;
+        throw new BadRequestException(error)
       }
 
       // Maneja los resultados de la consulta aquí

@@ -1,22 +1,18 @@
 import React from "react";
-import { Box, Card, Typography } from "../materialUI";
 import { ISellerCard } from "./interfaces";
-import { emailBoxStyle, emailTextStyle, iconNameBoxStyle, sellerCardStyle } from "./styles";
-import { fullWidthBoxStyle } from "../../styles";
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import { Seller, SellerEmail, SellerImg, SellerInfo, SellerName } from "./styles";
+
+const avatarImgs = (seed: string) => `https://api.dicebear.com/6.x/avataaars/svg?seed=${seed}`
 
 const SellerCard = ({ name, email } : ISellerCard) => {
-
   return (
-    <Card sx={sellerCardStyle}>
-      <Box sx={iconNameBoxStyle}>
-        <PersonOutlineIcon sx={{ marginRight: 2 }} />
-        <Typography>{name}</Typography>
-      </Box>
-      <Box sx={emailBoxStyle}>
-        <Typography sx={emailTextStyle}>{`Email: ${email}`}</Typography>
-      </Box>
-    </Card>
+    <div style={Seller}>
+      <img style={SellerImg} src={avatarImgs(name)} alt={name} />
+      <div style={SellerInfo}>
+        <h1 style={SellerName}>{name}</h1>
+        <p style={SellerEmail}>{email}</p>
+      </div>
+    </div>
   );
 }
 

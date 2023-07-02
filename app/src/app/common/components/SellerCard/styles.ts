@@ -1,26 +1,33 @@
-import { grey } from "@mui/material/colors";
-import { fullWidthBoxStyle } from "../../styles";
+export const Seller = {
+  display: 'flex',
+  flexDirection: 'column' as 'column',
+  border: '1px solid black',
+  borderRadius: '10px',
+  padding: '10px'
+}
 
-export const sellerCardStyle = {
-  width: 240,
-  height: 100,
-  padding: 2,
-  margin: 2,
-  backgroundColor: grey[300],
-};
+export const SellerImg = {
+  width: '100%',
+  height: '150px',
+  objectFit: 'contain' as 'contain',
+  marginBottom: '20px'
+}
 
-export const iconNameBoxStyle = {
-  ...fullWidthBoxStyle,
-  justifyContent: "flex-start",
-  marginBottom: 2,
-};
+export const SellerName = {
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '22px',
+  fontWeight: 'bold',
+  color: 'black',
+}
 
-export const emailBoxStyle = {
-  ...fullWidthBoxStyle,
-  justifyContent: "flex-start",
-};
+export const SellerInfo = {
+  display: 'flex',
+  flexDirection: 'column' as 'column',
+}
 
-export const emailTextStyle = {
-  fontSize: 13,
-  color: grey[700],
-};
+export const SellerEmail = {
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '20px',
+  color: 'black',
+  marginTop: '5px',
+}

@@ -1,107 +1,149 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Box, Divider, Typography } from "../common/components/materialUI";
-import { contentBoxStyle, fullWidthBoxStyle, layoutBoxStyle, titleStyle } from "../common/styles";
+import { contentBoxStyle, fullWidthBoxStyle, titleStyle } from "../common/styles";
 import { IProduct } from "./interfaces";
 import Loader from "../common/components/Loader";
-import ProductCard from "../common/components/ProductCard";
-import { productsWrapperBoxStyle } from "./styles";
-import { getCookie } from "../common/utils";
-import { EUserRole } from "../common/utils";
+import { EUserRole, getCookie } from "../common/utils";
 import api from "../common/api";
-import { ENDPOINT_PRODUCTS } from "../common/routes";
-
-const mockedProducts: IProduct[] = [
-  {
-    id: "1",
-    name: "Zapatillas Nike - Modelo 1",
-    price: 150.90,
-    description: "El mejor modelo hasta el día de la fecha.",
-    image: "string",
-  },
-  {
-    id: "2",
-    name: "Zapatillas Nike - Modelo 2",
-    price: 120.00,
-    description: "Se trata ni más de menos del modelo con la descripción más extensa. La idea de este modelo es probar el responsiveness.",
-    image: "string",
-  },
-  {
-    id: "3",
-    name: "Zapatillas Nike - Modelo 3",
-    price: 100.50,
-    description: "string",
-    image: "string",
-  }
-];
+import { ENDPOINT_PRODUCTS, endpointPutProductDescription } from "../common/routes";
+import { Footer, FooterText, Header, HomeProduct, LogButton, Logo, ProductDescription, ProductImage, ProductName, ProductPrice, ProductsList } from "../products/styles";
+import { delete_cookie } from "sfcookies";
+import EditIcon from '@mui/icons-material/Edit';
 
 const ProductsPage = () => {
-
-  const [proucts, setProducts] = useState<IProduct[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSeller, setIsSeller] = useState(false);
+  const [isUserSeller, setIsUserSeller] = useState(false);
+  const [isUserAdmin, setIsUserAdmin] = useState(false)
+  const [products, setProducts] = useState<IProduct[]>();
+  const [productEditing, setProductEditing] = useState('-1')
+  const [newProductName, setNewProductName] = useState('')
 
   useEffect(() => {
-    if(getCookie("accessToken")){
-      setIsLoggedIn(true);
-      setIsSeller(getCookie("role") == EUserRole[0]);
-      getProducts()
+    const isLogged = getCookie('accessToken')
+    const isSeller = getCookie("role") == EUserRole[0];
+    const isAdmin = getCookie('role') == EUserRole[2]
+
+    if(!isLogged) {
+      window.location.href = "/login"
     }
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
+    if (isSeller || isAdmin) {
+     setIsUserSeller(isSeller);
+     setIsUserAdmin(isAdmin)
+     getProducts()
+    }
+
   }, []);
 
-  const getProducts = async () =>{
-    try{
+  const getProducts = async () => {
+    setIsLoading(true)
+    try {
       const authRes = await api.get(ENDPOINT_PRODUCTS, {
         headers: {
           'Authorization': 'Bearer ' + getCookie("accessToken")?.replaceAll('"', '')
         }
       });
-      
+
       if(authRes.status == 200)
       {
         setProducts(authRes.data)
       }
-    } catch (e: any) {
-      console.log(e);
+
+    } catch (e : any){
+      console.error(e)
     }
+    setIsLoading(false)
   }
 
+  const editProduct = async (prodId: string, name: string) => { 
+    try {
+        setIsLoading(true)
+        await api.put(endpointPutProductDescription(prodId), {
+            description: name
+          },{
+            headers: {
+              'Authorization': 'Bearer ' + getCookie("accessToken")?.replaceAll('"', '')
+            }
+          });
+          setTimeout(async () => {
+            await getProducts()
+            setNewProductName('')
+            setProductEditing('-1') 
+            setIsLoading(false) 
+          }, 1500);      
+      } catch (e : any){
+        console.error(e)
+        setIsLoading(false)
+      }
+  }
+
+  const handleLogClick = () => {
+      delete_cookie("accessToken");
+      delete_cookie("role");
+      window.location.href = "/"
+  }
+
+  const handleEditClick = (prodId: string) => {
+    setProductEditing(prodId)
+  }
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === 'Enter') {
+        if(productEditing !== '-1') {
+            editProduct(productEditing, newProductName)
+        }
+    }
+  };
+  
   return (
-    <Box sx={layoutBoxStyle}>
-      <Box sx={contentBoxStyle}>
-      {
-          isLoggedIn ? (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <div style={Header}>
+        <img style={Logo} src='https://seeklogo.com/images/K/kings-sneakers-logo-5B97CC79A1-seeklogo.com.png' />
+        <button onClick={handleLogClick} style={LogButton}>{'Logout'}</button>
+      </div>
+      <Box sx={{...contentBoxStyle, minHeight: 'calc(100vh - 63px - 85px)'}}>
+        {
+          isUserSeller && !isLoading ? (
             <>
-              <Typography sx={titleStyle}>Productos</Typography> 
+              <Typography sx={{...titleStyle, color: 'black'}}>Mis productos</Typography> 
               <Divider />
-              <Box sx={productsWrapperBoxStyle}>
-                {Array.isArray(proucts) && proucts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    isSeller={isSeller}
-                  />
-                ))}             
-              </Box>
+              <div style={ProductsList}>
+                {Array.isArray(products) && products.map((prod) => (
+                    <div style={HomeProduct} key={prod.id}> 
+                      <img style={ProductImage} src={prod.image} />
+                      <div style={ProductDescription}>
+                        {productEditing !== prod.id ? (
+                        <p style={ProductName}>{prod.name}</p>
+                        ) : <input type="text" defaultValue={prod.name} onChange={(event:ChangeEvent<HTMLInputElement>) => setNewProductName(event.target.value)} onKeyDown={handleKeyDown}/>}
+                        <p style={ProductPrice}>${prod.price}</p>
+                        {isUserAdmin && (
+                        <EditIcon onClick={() => handleEditClick(prod.id)} style={{fill: 'black', cursor: 'pointer', position: 'absolute', right: 0, top: '25%'}}/>
+                      )}
+                      </div>
+                    </div>
+                ))}
+                </div>             
             </>
           ) : isLoading ? (
             <Loader />
           ) : (
             <Box sx={{...fullWidthBoxStyle, height: "100%" }}>
-              <Typography fontWeight={500}>Usted no tiene acceso a esta sección.</Typography>
+              <Typography style={{color: 'black',
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '25px',}} fontWeight={500}>Usted no tiene acceso a esta sección.</Typography>
             </Box>
           )
         }
-
       </Box>
-
-    </Box>
+      <div style={Footer}>
+        <p style={FooterText}>Kings Sneakers © 2023</p>
+      </div>
+    </div>
   )
 }
 
