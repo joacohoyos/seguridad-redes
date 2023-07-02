@@ -30,21 +30,21 @@ services:
     depends_on:
       - db
 
-  app:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    container_name: seguridad-redes-app
-    env_file:
-      - ./app/.env
-    networks:
-      - seg-redes
-    volumes:
-      - ./app:/app
-    ports:
-      - "3000:3000"
-    depends_on:
-      - api
+  # app:
+  #   build:
+  #     context: ./app
+  #     dockerfile: Dockerfile
+  #   container_name: seguridad-redes-app
+  #   env_file:
+  #     - ./app/.env
+  #   networks:
+  #     - seg-redes
+  #   volumes:
+  #     - ./app:/app
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - api
 
 volumes:
   db_data:
