@@ -126,6 +126,7 @@ const HomePage = () => {
       window.location.href = "/login"
     }
   }
+  
   return (
     <div style={HomeContent}>
       <div style={Header}>

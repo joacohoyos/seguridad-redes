@@ -34,11 +34,9 @@ export const themedButtonStyle = {
 };
 
 export const contentBoxStyle = {
-  width: "95%",
   height: "95%",
   padding: 2,
   backgroundColor: "white",
-  borderRadius: 2,
 };
 
 export const titleStyle = {

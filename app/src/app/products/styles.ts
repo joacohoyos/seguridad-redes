@@ -80,6 +80,7 @@ export const ProductPrice = {
 export const ProductDescription = {
   display: 'flex',
   flexDirection: 'column' as 'column',
+  position: 'relative' as 'relative',
 }
 
 export const ProductImage = {
@@ -145,4 +146,21 @@ export const HeroText = {
   color: 'white',
   marginTop:'100px',
   marginLeft: '100px',
+}
+
+export const ProductsList = {
+  padding: '20px',
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+  gap: "20px",
+}
+
+export const ProductsContent = {
+  display: "flex",
+  flexDirection: "column" as "column",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "90%",
+  padding: '20px',
+  backgroundColor: "white",
 }

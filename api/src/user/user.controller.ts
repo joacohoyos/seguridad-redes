@@ -2,7 +2,6 @@ import {Body, Controller, Get, Param, Post, Put, Request, UseGuards,} from '@nes
 import {UserService} from './user.service';
 import {User} from './user.entity';
 import {JwtAuthGuard} from '../auth/guards/jwt.guard';
-import {RoleGuard} from '../auth/guards/role.guard';
 import {LoggedRequest} from '../auth/interfaces/request.interfaces';
 import {EUserRole} from './enum/role.enum';
 
@@ -26,6 +25,7 @@ export class UserController {
   ): Promise<User> {
     return this.userService.updateUser(userId, userData);
   }
+
   @Post(':id/password')
   async confirmPassword(@Param('id') userId: number): Promise<User> {
     return this.userService.confirmPassword(userId);

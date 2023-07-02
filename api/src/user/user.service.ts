@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { User } from './user.entity';
-import * as bcrypt from 'bcryptjs';
 import { EUserRole } from './enum/role.enum';
 
 @Injectable()
@@ -30,23 +29,21 @@ export class UserService {
     const { password, password_to_confirm, ...rest } = userData;
 
     if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
       return this.prisma.users.update({
         where: { id: Number(userId) },
         data: {
           ...rest,
-          password: hashedPassword,
+          password,
         },
       });
     }
 
     if (password_to_confirm) {
-      const hashedPassword = await bcrypt.hash(password_to_confirm, 10);
       return this.prisma.users.update({
         where: { id: Number(userId) },
         data: {
           ...rest,
-          password_to_confirm: hashedPassword,
+          password_to_confirm,
         },
       });
     }
@@ -95,7 +92,7 @@ export class UserService {
       data: {
         name,
         email,
-        password: await bcrypt.hash(password, 10),
+        password,
         role: EUserRole.USER, // Set the default role to USER
         is_admin: false, // Assuming the initial admin status is set to false
       },

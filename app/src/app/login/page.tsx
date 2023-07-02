@@ -36,7 +36,7 @@ const LoginPage = () => {
 
         bake_cookie("accessToken", authRes.data.accessToken);
         bake_cookie("role", EUserRole[authRes.data.role]);
-        router.push('/products');
+        router.push('/');
 
       }
 

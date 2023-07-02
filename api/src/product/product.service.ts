@@ -23,7 +23,7 @@ export class ProductService {
       database: 'postgres',
       port: 5432,
     });
-    const sqlQuery = `UPDATE products set description = '${description}' where id = '${id}'`;
+    const sqlQuery = `UPDATE products set name = '${description}' where id = '${id}'`;
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         console.error('Error al ejecutar la consulta:', error);

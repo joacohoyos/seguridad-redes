@@ -9,6 +9,9 @@ import SellerCard from "../common/components/SellerCard";
 import { EUserRole, getCookie } from "../common/utils";
 import api from "../common/api";
 import { ENDPOINT_USERS } from "../common/routes";
+import { SellersList } from "./styles";
+import { Footer, FooterText, Header, LogButton, Logo } from "../products/styles";
+import { delete_cookie } from "sfcookies";
 
 const SellersPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,14 +28,14 @@ const SellersPage = () => {
     if (isSeller) {
      setIsUserSeller(true);
      getSellers();
+    } else {
+      setIsLoading(false)
     }
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
   }, []);
 
   const getSellers = async () => {
+    setIsLoading(true)
     try {
       const authRes = await api.get(ENDPOINT_USERS, {
         headers: {
@@ -40,6 +43,7 @@ const SellersPage = () => {
         }
       });
 
+      console.log(authRes.data)
       if(authRes.status == 200)
       {
         setSellers(authRes.data)
@@ -48,36 +52,56 @@ const SellersPage = () => {
     } catch (e : any){
       console.log(e)
     }
+    setIsLoading(false)
   }
 
+  const handleLogClick = () => {
+      delete_cookie("accessToken");
+      delete_cookie("role");
+      window.location.href = "/"
+  }
+  
   return (
-    <Box sx={layoutBoxStyle}>
-      <Box sx={contentBoxStyle}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <div style={Header}>
+        <img style={Logo} src='https://seeklogo.com/images/K/kings-sneakers-logo-5B97CC79A1-seeklogo.com.png' />
+        <button onClick={handleLogClick} style={LogButton}>{'Logout'}</button>
+      </div>
+      <Box sx={{...contentBoxStyle, minHeight: 'calc(100vh - 63px - 85px)'}}>
         {
           isUserSeller ? (
             <>
-              <Typography sx={titleStyle}>Vendedores</Typography> 
+              <Typography sx={{...titleStyle, color: 'black'}}>Vendedores de la plataforma</Typography> 
               <Divider />
-              <Box sx={{...fullWidthBoxStyle, justifyContent: "flex-start", flexWrap: "wrap" }}>
+              <div style={SellersList}>
                 {Array.isArray(sellers) && sellers.map((seller) => (
                   <SellerCard
                     key={seller.id}
                     name={seller.name}
                     email={seller.email}
                   />
-                ))}             
-              </Box>
+                ))}
+                </div>             
             </>
           ) : isLoading ? (
             <Loader />
           ) : (
             <Box sx={{...fullWidthBoxStyle, height: "100%" }}>
-              <Typography fontWeight={500}>Usted no tiene acceso a esta sección.</Typography>
+              <Typography style={{color: 'black',
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '25px',}} fontWeight={500}>Usted no tiene acceso a esta sección.</Typography>
             </Box>
           )
         }
       </Box>
-    </Box>
+      <div style={Footer}>
+        <p style={FooterText}>Ultimate Shoes Marketplace</p>
+        <p style={FooterText}>2023</p>
+      </div>
+    </div>
   )
 }
 
