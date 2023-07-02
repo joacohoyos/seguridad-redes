@@ -5,9 +5,9 @@ import { AccountCircle, Box, Button, InputAdornment, KeyIcon, Modal, TextField, 
 import { appTitleTextStyle, forgorYourPasswordTextStyle, loginBox, modalBoxStyle } from "./styles";
 import { fullWidthBoxStyle, layoutBoxStyle, themedButtonStyle } from "../common/styles";
 import api from "../common/api";
-import { ENDPOINT_AUTH, ENDPOINT_USERS, endpointChangePassword } from "../common/routes";
+import { ENDPOINT_AUTH, endpointChangePassword } from "../common/routes";
 import Loader from "../common/components/Loader";
-import {bake_cookie} from "sfcookies"
+import { setCookie } from "cookies-next";
 import { EUserRole } from "../common/utils";
 import { useRouter } from "next/navigation";
 const LoginPage = () => {
@@ -33,8 +33,8 @@ const LoginPage = () => {
 
       if (authRes.status === 201) {
 
-        bake_cookie("accessToken", authRes.data.accessToken);
-        bake_cookie("role", EUserRole[authRes.data.role]);
+        setCookie("accessToken", authRes.data.accessToken);
+        setCookie("role", EUserRole[authRes.data.role]);
         router.push('/products');
 
       }
@@ -55,7 +55,7 @@ const LoginPage = () => {
       password_to_confirm: newPassword
     });
 
-    if (authRes.status === 201) {
+    if (authRes.status === 200) {
       setSentNewPassword(true);
     }
 

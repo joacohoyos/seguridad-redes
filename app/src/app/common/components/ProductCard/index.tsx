@@ -10,7 +10,8 @@ import { fullWidthBoxStyle } from "../../styles";
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api";
-import { ENDPOINT_PRODUCTS, endpointPutProductDescription } from "../../routes";
+import { endpointPutProductDescription } from "../../routes";
+import { getCookie } from "../../utils";
 
 const ProductCard = ({ product, isSeller } : IProductCard) => {
 
@@ -27,7 +28,9 @@ const ProductCard = ({ product, isSeller } : IProductCard) => {
     try {
       const editRes = await api.put(endpointPutProductDescription(id), {
         description: newDesc
-      });
+      },{headers: {
+        'Authorization': 'Bearer ' + getCookie("accessToken")?.replaceAll('"', '')
+      }});
 
       if (editRes.status === 200) {
       } else {
