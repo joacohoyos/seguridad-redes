@@ -25,7 +25,7 @@ const ProductCard = ({ product, isSeller } : IProductCard) => {
 
   const handleSaveEdit = async () => {
     try {
-      const editRes = await api.post(endpointPutProductDescription(id), {
+      const editRes = await api.put(endpointPutProductDescription(id), {
         description: newDesc
       });
 
