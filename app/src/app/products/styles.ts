@@ -70,6 +70,12 @@ export const ProductName ={
   color: 'black',
 }
 
+export const ProductDescriptionText = {
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '16px',
+  marginTop: '5px',
+}
+
 export const ProductPrice = {
   fontFamily: 'Lato, sans-serif',
   fontSize: '20px',
