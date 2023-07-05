@@ -16,14 +16,14 @@ export class UserService {
     return users.map(this.removePassword);
   }
 
-  async getUsersByRole(role: EUserRole): Promise<UserWithoutPassword[]> {
+  async getUsersByRole(role: EUserRole): Promise<User[]> {
     const users = await this.prisma.users.findMany({ where: { role: role } });
-    return users.map(this.removePassword);
+    return users
   }
 
-  async getUserByEmail(email: string): Promise<UserWithoutPassword | null> {
+  async getUserByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.users.findUnique({ where: { email } });
-    return user && this.removePassword(user);
+    return user;
   }
 
   async updateUser(email: string, userData: Partial<User>): Promise<User> {
@@ -62,7 +62,7 @@ export class UserService {
       },
     });
   }
-  async confirmPassword(email: string): Promise<UserWithoutPassword> {
+  async confirmPassword(email: string): Promise<User> {
     const user = await this.prisma.users.findUnique({
       where: { email: email },
     });
@@ -83,7 +83,7 @@ export class UserService {
         password_to_confirm: null,
       },
     });
-    return this.removePassword(updatedUser);
+    return updatedUser
   }
 
   async createUser(user: Partial<User>): Promise<User> {
