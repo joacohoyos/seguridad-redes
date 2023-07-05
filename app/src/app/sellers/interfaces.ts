@@ -10,10 +10,7 @@ export interface IRoute {
   name: string; 
 }
 
-export const SELLER_ROUTES: IRoute[] = [{
-  path: '/products',
-  name: 'Products'
-}]
+export const SELLER_ROUTES: IRoute[] = []
 
 export const ADMIN_ROUTES: IRoute[] = [{
   path: '/notifications',
