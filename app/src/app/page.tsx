@@ -5,7 +5,7 @@ import { INotification } from "./products/interfaces";
 import { getCookie } from "./common/utils";
 import { ENDPOINT_NOTIFICATIONS } from "./common/routes";
 import api from "./common/api";
-import { Banner, Footer, FooterText, Header, Hero, HeroButton, HeroButtonHover, HeroSubtitle, HeroText, HomeContent, HomeProduct, LogButton, Logo, ProductButton, ProductContent, ProductDescription, ProductImage, ProductName, ProductPrice, Products, productsWrapperBoxStyle } from "./products/styles";
+import { Banner, Footer, FooterText, Header, Hero, HeroButton, HeroButtonHover, HeroSubtitle, HeroText, HomeContent, HomeProduct, LogButton, Logo, ProductButton, ProductContent, ProductDescriptionEdit, ProductImage, ProductName, ProductPrice, Products, productsWrapperBoxStyle } from "./products/styles";
 import { delete_cookie } from "sfcookies";
 
 const products = [
@@ -135,7 +135,7 @@ const HomePage = () => {
             <div style={HomeProduct} key={prod.id}> 
               <img style={ProductImage} src={prod.image} />
               <div style={ProductContent}>
-                <div style={ProductDescription}>
+                <div style={ProductDescriptionEdit}>
                   <p style={ProductName}>{prod.name}</p>
                   <p style={ProductPrice}>${prod.price}</p>
                 </div>

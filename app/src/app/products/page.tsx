@@ -15,8 +15,8 @@ import {
   HomeProduct,
   LogButton,
   Logo,
+  ProductDescriptionEdit,
   ProductDescription,
-  ProductDescriptionText,
   ProductImage,
   ProductName,
   ProductPrice,
@@ -131,9 +131,9 @@ const ProductsPage = () => {
                       <img style={ProductImage} src={prod.image} />
                       <p style={ProductName}>{prod.name}</p>
                       <p style={ProductPrice}>${prod.price}</p>
-                      <div style={ProductDescription}>
+                      <div style={ProductDescriptionEdit}>
                         {productEditing !== prod.id ? (
-                        <p style={ProductDescriptionText}>{prod.description}</p>
+                        <p style={ProductDescription}>{prod.description}</p>
                         ) : <input type="text" defaultValue={prod.description} onChange={(event:ChangeEvent<HTMLInputElement>) => setNewProductName(event.target.value)} onKeyDown={handleKeyDown}/>}
                         <EditIcon onClick={() => handleEditClick(prod.id)} style={{fill: 'black', cursor: 'pointer', position: 'absolute', right: 0, top: '25%'}}/>
                       </div>
