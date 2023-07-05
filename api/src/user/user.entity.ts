@@ -9,3 +9,5 @@ export class User {
   is_admin: boolean;
   password_to_confirm?: string;
 }
+
+export type UserWithoutPassword = Omit<User, 'password'>;
