@@ -8,7 +8,20 @@ import Loader from "../common/components/Loader";
 import { EUserRole, getCookie } from "../common/utils";
 import api from "../common/api";
 import { ENDPOINT_PRODUCTS, endpointPutProductDescription } from "../common/routes";
-import { Footer, FooterText, Header, HomeProduct, LogButton, Logo, ProductDescription, ProductImage, ProductName, ProductPrice, ProductsList } from "../products/styles";
+import {
+  Footer,
+  FooterText,
+  Header,
+  HomeProduct,
+  LogButton,
+  Logo,
+  ProductDescriptionEdit,
+  ProductDescription,
+  ProductImage,
+  ProductName,
+  ProductPrice,
+  ProductsList
+} from "../products/styles";
 import { delete_cookie } from "sfcookies";
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -116,14 +129,13 @@ const ProductsPage = () => {
                 {Array.isArray(products) && products.map((prod) => (
                     <div style={HomeProduct} key={prod.id}> 
                       <img style={ProductImage} src={prod.image} />
-                      <div style={ProductDescription}>
+                      <p style={ProductName}>{prod.name}</p>
+                      <p style={ProductPrice}>${prod.price}</p>
+                      <div style={ProductDescriptionEdit}>
                         {productEditing !== prod.id ? (
-                        <p style={ProductName}>{prod.name}</p>
-                        ) : <input type="text" defaultValue={prod.name} onChange={(event:ChangeEvent<HTMLInputElement>) => setNewProductName(event.target.value)} onKeyDown={handleKeyDown}/>}
-                        <p style={ProductPrice}>${prod.price}</p>
-                        {isUserAdmin && (
+                        <p style={ProductDescription}>{prod.description}</p>
+                        ) : <input type="text" defaultValue={prod.description} onChange={(event:ChangeEvent<HTMLInputElement>) => setNewProductName(event.target.value)} onKeyDown={handleKeyDown}/>}
                         <EditIcon onClick={() => handleEditClick(prod.id)} style={{fill: 'black', cursor: 'pointer', position: 'absolute', right: 0, top: '25%'}}/>
-                      )}
                       </div>
                     </div>
                 ))}
