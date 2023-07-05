@@ -35,9 +35,17 @@ const LoginPage = () => {
       if (authRes.status === 201) {
 
         setCookie("accessToken", authRes.data.accessToken);
-        setCookie("role", EUserRole[authRes.data.role]);
-        router.push('/');
-
+        if(authRes.data.isAdmin) {
+          setCookie("role", EUserRole[2])
+          router.push('/notifications');
+        } else {
+          setCookie("role", EUserRole[authRes.data.role]);
+          if(authRes.data.role === EUserRole.USER) {
+            router.push('/');
+          } else {
+            router.push('/products');
+          }
+        }
       }
 
     } catch (e: any) {

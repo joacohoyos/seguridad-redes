@@ -85,6 +85,7 @@ export const ProductPrice = {
 
 export const ProductDescriptionEdit = {
   display: 'flex',
+  color: 'black',
   flexDirection: 'column' as 'column',
   position: 'relative' as 'relative',
 }
@@ -196,4 +197,19 @@ export const ProductContent = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+}
+
+export const NavigationBar = {
+  backgroundColor: 'black',
+  color: 'white',
+  fontFamily: 'Lato, sans-serif',
+  fontSize: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 40,
+  justifyContent: 'center',
+  padding: '10px 20px',
+  cursor: 'pointer',
+  alignContent: 'center',
+  transition: 'background-color 0.3s ease'
 }

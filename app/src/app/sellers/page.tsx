@@ -2,34 +2,43 @@
 
 import React, { useEffect, useState } from "react";
 import { Box, Divider, Typography } from "../common/components/materialUI";
-import { contentBoxStyle, fullWidthBoxStyle, layoutBoxStyle, titleStyle } from "../common/styles";
-import { ISeller } from "./interfaces";
+import { contentBoxStyle, fullWidthBoxStyle, titleStyle } from "../common/styles";
+import { ADMIN_ROUTES, IRoute, ISeller, SELLER_ROUTES } from "./interfaces";
 import Loader from "../common/components/Loader";
 import SellerCard from "../common/components/SellerCard";
 import { EUserRole, getCookie } from "../common/utils";
 import api from "../common/api";
 import { ENDPOINT_USERS } from "../common/routes";
 import { SellersList } from "./styles";
-import { Footer, FooterText, Header, LogButton, Logo } from "../products/styles";
+import { Footer, FooterText, Header, LogButton, Logo, NavigationBar } from "../products/styles";
 import { delete_cookie } from "sfcookies";
 
 const SellersPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUserSeller, setIsUserSeller] = useState(false);
+  const [isUserAdmin, setIsUserAdmin] = useState(false);
   const [sellers, setSellers] = useState<ISeller[]>();
+  const [routes, setRoutes] = useState<IRoute[]>([])
 
   useEffect(() => {
     const isLogged = getCookie('accessToken')
     const isSeller = getCookie("role") == EUserRole[0];
+    const isAdmin = getCookie('role') == EUserRole[2]
 
     if(!isLogged) {
       window.location.href = "/login"
     }
     if (isSeller) {
      setIsUserSeller(true);
+     setRoutes(SELLER_ROUTES)
+     getSellers();
+    } else if (isAdmin) {
+      setIsUserAdmin(true);
+     setRoutes(ADMIN_ROUTES)
      getSellers();
     } else {
       setIsLoading(false)
+
     }
 
   }, []);
@@ -62,17 +71,25 @@ const SellersPage = () => {
   }
   
   return (
+    <>
     <div style={{
       display: 'flex',
       flexDirection: 'column',
     }}>
-      <div style={Header}>
+      <div style={{...Header}}>
         <img style={Logo} src='https://seeklogo.com/images/K/kings-sneakers-logo-5B97CC79A1-seeklogo.com.png' />
         <button onClick={handleLogClick} style={LogButton}>{'Logout'}</button>
       </div>
+      <div style={NavigationBar}>
+        {routes.map((route) => {
+          return <div onClick={() => window.location.href = route.path}>
+            {route.name}
+            </div>
+        })}
+      </div>
       <Box sx={{...contentBoxStyle, minHeight: 'calc(100vh - 63px - 85px)'}}>
         {
-          isUserSeller ? (
+          isUserSeller || isUserAdmin ? (
             <>
               <Typography sx={{...titleStyle, color: 'black'}}>Vendedores de la plataforma</Typography> 
               <Divider />
@@ -101,6 +118,7 @@ const SellersPage = () => {
         <p style={FooterText}>Kings Sneakers © 2023</p>
       </div>
     </div>
+    </>
   )
 }
 

@@ -22,11 +22,12 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User): Promise<{ accessToken: string, role:EUserRole }> {
+  async login(user: User): Promise<{ accessToken: string, role:EUserRole, isAdmin: boolean }> {
     const payload = { email: user.email };
     const accessToken = this.jwtService.sign(payload);
     const role = user.role
-    return { accessToken, role };
+    const isAdmin = user.is_admin;
+    return { accessToken, role, isAdmin };
   }
 
   async signup(createUserDto: CreateUserDto) {

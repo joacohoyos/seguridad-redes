@@ -20,18 +20,20 @@ import {
   ProductImage,
   ProductName,
   ProductPrice,
-  ProductsList
+  ProductsList,
+  NavigationBar
 } from "../products/styles";
 import { delete_cookie } from "sfcookies";
 import EditIcon from '@mui/icons-material/Edit';
+import { ADMIN_ROUTES, IRoute, SELLER_ROUTES } from "../sellers/interfaces";
 
 const ProductsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUserSeller, setIsUserSeller] = useState(false);
-  const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [products, setProducts] = useState<IProduct[]>();
   const [productEditing, setProductEditing] = useState('-1')
   const [newProductName, setNewProductName] = useState('')
+  const [routes, setRoutes] = useState<IRoute[]>([])
 
   useEffect(() => {
     const isLogged = getCookie('accessToken')
@@ -42,10 +44,15 @@ const ProductsPage = () => {
       window.location.href = "/login"
     }
 
-    if (isSeller || isAdmin) {
+    if (isSeller) {
      setIsUserSeller(isSeller);
-     setIsUserAdmin(isAdmin)
      getProducts()
+     setRoutes(SELLER_ROUTES)
+    }
+
+    if(isAdmin) {
+      setRoutes(ADMIN_ROUTES)
+      getProducts()
     }
 
   }, []);
@@ -119,6 +126,13 @@ const ProductsPage = () => {
         <img style={Logo} src='https://seeklogo.com/images/K/kings-sneakers-logo-5B97CC79A1-seeklogo.com.png' />
         <button onClick={handleLogClick} style={LogButton}>{'Logout'}</button>
       </div>
+      <div style={NavigationBar}>
+        {routes.map((route) => {
+          return <div onClick={() => window.location.href = route.path}>
+            {route.name}
+            </div>
+        })}
+      </div>
       <Box sx={{...contentBoxStyle, minHeight: 'calc(100vh - 63px - 85px)'}}>
         {
           isUserSeller && !isLoading ? (
@@ -132,10 +146,10 @@ const ProductsPage = () => {
                       <p style={ProductName}>{prod.name}</p>
                       <p style={ProductPrice}>${prod.price}</p>
                       <div style={ProductDescriptionEdit}>
+                      <EditIcon onClick={() => handleEditClick(prod.id)} style={{fill: 'black', cursor: 'pointer', position: 'absolute', right: 0, top: -55}}/>
                         {productEditing !== prod.id ? (
                         <p style={ProductDescription}>{prod.description}</p>
                         ) : <input type="text" defaultValue={prod.description} onChange={(event:ChangeEvent<HTMLInputElement>) => setNewProductName(event.target.value)} onKeyDown={handleKeyDown}/>}
-                        <EditIcon onClick={() => handleEditClick(prod.id)} style={{fill: 'black', cursor: 'pointer', position: 'absolute', right: 0, top: '25%'}}/>
                       </div>
                     </div>
                 ))}
