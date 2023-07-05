@@ -1,0 +1,17 @@
+  <!-- public/sitemap.xml -->
+   <xml version="1.0" encoding="UTF-8">
+   <urlset>
+     <url>
+       <loc>http://localhost:3000/sellers</loc>
+       <lastmod>2023-07-06</lastmod>
+     </url>
+          <url>
+       <loc>http://localhost:3000/products</loc>
+       <lastmod>2023-07-06</lastmod>
+     </url>
+          <url>
+       <loc>http://localhost:3000</loc>
+       <lastmod>2023-07-06</lastmod>
+     </url>
+   </urlset>
+   </xml>

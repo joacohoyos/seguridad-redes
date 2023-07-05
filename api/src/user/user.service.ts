@@ -1,27 +1,34 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { User } from './user.entity';
+import { User, UserWithoutPassword } from './user.entity';
 import { EUserRole } from './enum/role.enum';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getUsers(): Promise<User[]> {
-    return this.prisma.users.findMany();
+  private removePassword(user: User): UserWithoutPassword {
+    const { password, ...rest } = user;
+    return rest;
+  }
+  async getUsers(): Promise<UserWithoutPassword[]> {
+    const users = await this.prisma.users.findMany();
+    return users.map(this.removePassword);
   }
 
   async getUsersByRole(role: EUserRole): Promise<User[]> {
-    return this.prisma.users.findMany({ where: { role: role } });
+    const users = await this.prisma.users.findMany({ where: { role: role } });
+    return users
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
-    return this.prisma.users.findUnique({ where: { email } });
+    const user = await this.prisma.users.findUnique({ where: { email } });
+    return user;
   }
 
   async updateUser(email: string, userData: Partial<User>): Promise<User> {
     const user = await this.prisma.users.findUnique({
-      where: { email: email},
+      where: { email: email },
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -69,13 +76,14 @@ export class UserService {
       );
     }
 
-    return this.prisma.users.update({
+    const updatedUser = await this.prisma.users.update({
       where: { email: email },
       data: {
         password: user.password_to_confirm,
         password_to_confirm: null,
       },
     });
+    return updatedUser
   }
 
   async createUser(user: Partial<User>): Promise<User> {
