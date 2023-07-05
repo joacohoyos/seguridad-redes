@@ -36,7 +36,7 @@ const LoginPage = () => {
 
         setCookie("accessToken", authRes.data.accessToken);
         setCookie("role", EUserRole[authRes.data.role]);
-        router.push('/products');
+        router.push('/');
 
       }
 
